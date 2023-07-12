@@ -13,49 +13,49 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import org.jaudiotagger.audio.AudioHeader
-import org.jaudiotagger.tag.FieldKey
-import org.jaudiotagger.tag.Tag
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.jetbrains.skia.Image
 import presentation.component.shape.AbsoluteSmoothCornerShape
-import singleton.AudioUtil
+import util.AudioMetadata
+import util.AudioUtil
 import util.TimeUtil.Companion.toMinSec
 import java.io.File
+import kotlin.math.roundToInt
 
 
 @Preview
 @Composable
 fun AudioFileItem(
 	audioFile: File,
-	index: Int = 1,
 	onClickFile: () -> Unit = {},
 ) {
-	var audioTag by remember { mutableStateOf<Tag?>(null) }
-	var audioHeader by remember { mutableStateOf<AudioHeader?>(null) }
+	val scope = rememberCoroutineScope()
+
 	var albumImage by remember { mutableStateOf<ImageBitmap?>(null) }
+	var audioMetadata by remember { mutableStateOf<AudioMetadata?>(null) }
+	var audioDuration by remember { mutableStateOf<String?>(null) }
 
 	LaunchedEffect(key1 = audioFile) {
-		try {
-			AudioUtil.audioFileIO.readFile(audioFile).let {
-				audioTag = it.tag
-				audioHeader = it.audioHeader
+		scope.launch(Dispatchers.IO) {
+			try {
+				val audioTag = AudioUtil.audioFileIO.readFile(audioFile).tag
+				audioTag?.firstArtwork?.binaryData?.let { albumImage = Image.makeFromEncoded(it).toComposeImageBitmap() }
+			} catch (_: Exception) {
+				albumImage = null
 			}
-		} catch (e: Exception) {
-			audioTag = null
-			audioHeader = null
-			albumImage = null
-		}
-		try {
-			audioTag?.firstArtwork?.binaryData?.let { albumImage = Image.makeFromEncoded(it).toComposeImageBitmap() }
-		} catch (_ : Exception) {
-			albumImage = null
+			try {
+				audioMetadata = AudioUtil.getMetadata(audioFile)
+				audioDuration = audioMetadata?.duration?.toDouble()?.roundToInt()?.toMinSec()
+				println(audioDuration)
+			} catch (_: Exception) {
+			}
 		}
 	}
 
@@ -67,7 +67,7 @@ fun AudioFileItem(
 	) {
 		Spacer(modifier = Modifier.width(12.dp))
 		Text(
-			text = audioTag?.getFirst(FieldKey.TRACK) ?: "",
+			text = audioMetadata?.trackNumber ?: "",
 			style = MaterialTheme.typography.bodySmall,
 			color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.71f),
 			modifier = Modifier.width(24.dp)
@@ -122,18 +122,18 @@ fun AudioFileItem(
 
 //		Artist
 		Text(
-			text = audioTag?.getFirst(FieldKey.ARTIST) ?: "",
+			text = audioMetadata?.artist ?: "",
 			style = MaterialTheme.typography.bodyMedium,
 			color = MaterialTheme.colorScheme.onSurface,
 			maxLines = 1,
 			overflow = TextOverflow.Ellipsis,
 			modifier = Modifier.width(192.dp)
 		)
-		Spacer(modifier = Modifier.width(8.dp))
+		Spacer(modifier = Modifier.width(12.dp))
 
 //		Track length
 		Text(
-			text = audioHeader?.trackLength?.toMinSec() ?: "",
+			text = audioDuration ?: "",
 			style = MaterialTheme.typography.bodyMedium,
 			color = MaterialTheme.colorScheme.onSurface,
 			maxLines = 1,

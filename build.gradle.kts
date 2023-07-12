@@ -48,7 +48,6 @@ kotlin {
 				implementation("uk.co.caprica:vlcj:4.8.2")
 
 				implementation("net.jthink:jaudiotagger:3.0.1")
-				implementation("net.sf.javamusictag:jid3lib:0.5.4")
 //				preference storage
 				implementation("com.russhwolf:multiplatform-settings:1.0.0")
 

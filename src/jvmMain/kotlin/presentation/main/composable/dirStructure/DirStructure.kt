@@ -13,19 +13,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import moe.tlaster.precompose.viewmodel.viewModel
-import org.jaudiotagger.tag.FieldKey
 import presentation.component.Hr
-import presentation.component.shape.AbsoluteSmoothCornerShape
 import presentation.main.MainViewModel
 import presentation.main.PlayerViewModel
-import util.TimeUtil.Companion.toMinSec
 import java.io.File
 import javax.swing.JFileChooser
 
@@ -115,9 +110,7 @@ fun FileStructure(
 							) {
 								AudioFileItem(
 									audioFile = audioFile,
-									index = index + 1,
-									onClickFile = { playerViewModel.onClickFile(audioFileList, audioFile) },
-								)
+								) { playerViewModel.onClickFile(audioFileList, audioFile) }
 							}
 						}
 					}
@@ -225,7 +218,7 @@ private fun AudioFileListHeader() {
 				modifier = Modifier.width(192.dp)
 			)
 
-			Spacer(modifier = Modifier.width(8.dp))
+			Spacer(modifier = Modifier.width(12.dp))
 
 			Text(
 				text = "Length",

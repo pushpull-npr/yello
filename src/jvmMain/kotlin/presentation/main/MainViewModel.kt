@@ -1,8 +1,6 @@
 package presentation.main
 
-import com.russhwolf.settings.get
 import data.settings
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +10,7 @@ import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 import org.apache.commons.io.FileUtils
 import org.jaudiotagger.tag.FieldKey
-import singleton.AudioUtil
+import util.AudioUtil
 import util.SortUtil
 import java.io.File
 

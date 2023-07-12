@@ -22,7 +22,7 @@ import presentation.main.composable.bottomBar.YelloBottomBar
 import presentation.main.composable.dirStructure.FileStructure
 import presentation.main.composable.drawer.leftDrawer.LeftDrawer
 import presentation.main.composable.drawer.rightDrawer.RightDrawer
-import singleton.AudioUtil
+import util.AudioUtil
 import java.io.File
 
 
@@ -31,6 +31,8 @@ fun Main() {
 
 	val mainViewModel = viewModel(MainViewModel::class) { MainViewModel() }
 	val playerViewModel = viewModel(PlayerViewModel::class) { PlayerViewModel() }
+
+	val currentFolder by mainViewModel.currentFolder.collectAsState()
 
 	val currentQueue by playerViewModel.currentQueue.collectAsState()
 	val currentTrackIndex by playerViewModel.currentTrackIndex.collectAsState()

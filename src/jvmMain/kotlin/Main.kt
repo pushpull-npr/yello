@@ -8,12 +8,10 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
-import com.russhwolf.settings.Settings
 import moe.tlaster.precompose.PreComposeWindow
 import presentation.main.Main
 import theme.AppTheme
 import java.awt.Window
-import javax.swing.JFileChooser
 
 
 val LocalWindow = compositionLocalOf<Window> { error("") }
