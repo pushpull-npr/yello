@@ -16,7 +16,7 @@ class IDv3Test {
 	val mp3File = File("/home/pushpull/tmp/yelloTest/mp3TestFile.mp3")
 	val opusFile = File("/home/pushpull/Music/The Chainsmokers - Closer (Lyric) ft. Halsey.opus")
 //	val opusFile = File("/home/pushpull/tmp/yelloTest/tagmp3_opusTestFile.opus.mp3")
-	val wavFile = File("/home/pushpull/tmp/yelloTest/wavTestFile.wav")
+	val wavFile = File("/home/pushpull/tmp/yelloTest/twav.wav")
 
 	@Test
 	fun mp3File_test() {
@@ -62,7 +62,21 @@ class IDv3Test {
 
 	@Test
 	fun wavFile_test() {
-		val ext = audioFileIO.readFile(wavFile).audioHeader.format
-		println(ext)
+		val ext = audioFileIO.readFile(wavFile)
+		println(ext.audioHeader.format)
+
+		ext.tag.firstArtwork.let { println(it) }
+
+		val parser = AutoDetectParser()
+		val handler = BodyContentHandler()
+		val metadata = Metadata()
+		val inputStream = FileInputStream(wavFile)
+		val context = ParseContext()
+
+		parser.parse(inputStream, handler, metadata, context)
+
+		metadata.names().forEach {
+			println(it)
+		}
 	}
 }

@@ -75,8 +75,6 @@ fun Main() {
 		}
 	}
 
-	println("name : ${audioFile?.path}")
-
 	Column(
 		modifier = Modifier
 			.fillMaxSize()
