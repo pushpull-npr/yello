@@ -11,18 +11,18 @@ version = "1.0-SNAPSHOT"
 repositories {
 	google()
 	mavenCentral()
+	maven { url = uri("https://jitpack.io") }
 	maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
 kotlin {
 	jvm {
-		jvmToolchain(18)
 		withJava()
 	}
 	sourceSets {
 		val jvmMain by getting {
 			dependencies {
-				implementation(compose.desktop.currentOs){
+				implementation(compose.desktop.currentOs) {
 					exclude(group = "androidx.compose.material")
 					exclude(group = "org.jetbrains.compose.material")
 				}
@@ -32,6 +32,8 @@ kotlin {
 				api(compose.runtime)
 
 				implementation("org.jetbrains.compose.material3:material3-desktop:1.2.1")
+
+				implementation("com.github.racra:smooth-corner-rect-android-compose:v1.0.0")
 
 				implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
 
@@ -43,16 +45,18 @@ kotlin {
 				implementation("org.apache.tika:tika-parsers-standard-package:2.8.0")
 //				implementation("commons-io:commons-io:2.13.0")
 
+//				Database
+				implementation("com.squareup.sqldelight:runtime:1.5.5")
 
-//				vlc bridge
+//				Storage
+				implementation("com.russhwolf:multiplatform-settings-no-arg:1.0.0")
+
+				//				vlc bridge
 				implementation("uk.co.caprica:vlcj:4.8.2")
 
 				implementation("net.jthink:jaudiotagger:3.0.1")
 //				preference storage
 				implementation("com.russhwolf:multiplatform-settings:1.0.0")
-
-//				Storage
-				implementation("com.russhwolf:multiplatform-settings-no-arg:1.0.0")
 
 //				Dbus api
 				implementation("com.github.hypfvieh:dbus-java-core:4.3.0")
@@ -76,13 +80,18 @@ kotlin {
 	}
 }
 
+
 compose.desktop {
 	application {
 		mainClass = "MainKt"
 		nativeDistributions {
-			targetFormats(TargetFormat.AppImage, TargetFormat.Exe)
+			targetFormats(TargetFormat.AppImage)
 			packageName = "Yello"
 			packageVersion = "1.0.0"
+
+			modules("java.sql")
 		}
 	}
 }
+
+

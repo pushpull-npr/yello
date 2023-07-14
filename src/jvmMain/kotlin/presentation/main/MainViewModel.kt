@@ -40,7 +40,7 @@ class MainViewModel : ViewModel() {
 						if (sortOrder1 == SortUtil.Companion.SortOrder.Ascending) it.sortedBy { it.name } else it.sortedByDescending { it.name }
 					} ?: listOf())
 
-					val childFileList = (FileUtils.listFiles(currentFolder2, arrayOf("mp3", "ogg", "opus", "wav"), false)?.let {
+					val childFileList = (FileUtils.listFiles(currentFolder2, arrayOf("mp3", "ogg", "opus", "wav", "m4a"), false)?.let {
 						if (sortOrder1 == SortUtil.Companion.SortOrder.Ascending) {
 							when (sortBy1) {
 								SortUtil.Companion.SortBy.TrackNumber -> it.sortedBy {

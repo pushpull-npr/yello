@@ -53,7 +53,6 @@ fun AudioFileItem(
 			try {
 				audioMetadata = AudioUtil.getMetadata(audioFile)
 				audioDuration = audioMetadata?.duration?.toDouble()?.roundToInt()?.toMinSec()
-				println(audioDuration)
 			} catch (_: Exception) {
 			}
 		}

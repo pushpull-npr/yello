@@ -35,7 +35,7 @@ fun RowScope.FolderItem(
 	LaunchedEffect(key1 = Unit) {
 		scope.launch(Dispatchers.IO) {
 			try {
-				childSize = FileUtils.listFiles(file, arrayOf("mp3", "ogg", "opus", "wav"), true).size
+				childSize = FileUtils.listFiles(file, arrayOf("mp3", "ogg", "opus", "wav", "m4a"), true).size
 			} catch (_ : AccessDeniedException) {
 			} catch (_ : UncheckedIOException) {
 			}
